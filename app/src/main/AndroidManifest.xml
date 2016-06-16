@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lqc.designsupportlibrarydemo.app" >
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_lanuch"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.DesignDemo" >
+
+        <!--测试使用-->
+        <uses-library android:name="android.test.runner"/>
+
+        <instrumentation android:name="android.test.InstrumentationTestRunner"
+                         android:targetPackage="com.lqc.designsupportlibrarydemo.app">
+        </instrumentation>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+                android:name=".activity.DetailActivity"
+                android:label="日记">
+        </activity>
+        <activity android:name=".activity.EditActivity"
+                  android:label="@string/app_name">
+        </activity>
+    </application>
+
+</manifest>

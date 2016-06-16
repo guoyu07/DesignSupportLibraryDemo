@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+              android:layout_height="match_parent"
+
+              tools:context="zcalory.littlehorse_note.Edit_List"
+              android:orientation="vertical">
+
+    <RelativeLayout
+            android:layout_height="100px"
+            android:layout_width="match_parent"
+            android:id="@+id/edit_menu_bar">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/r2">
+
+        <EditText android:hint="TITLE"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="30dp"
+                  android:id="@+id/list_title"
+                  android:background="@null"
+                  android:layout_alignParentTop="true" />
+
+        <TextView android:text="0"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/list_num"
+                  android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <FrameLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/edit_scrollview">
+
+            <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/edit_scroll_l"
+                    android:orientation="vertical"/>
+
+        </ScrollView>
+
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton"
+                android:layout_gravity="center_horizontal|bottom"
+                android:src="@drawable/ic_done"/>
+
+    </FrameLayout>
+
+
+</LinearLayout>
