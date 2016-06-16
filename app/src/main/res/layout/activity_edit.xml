@@ -25,13 +25,15 @@
                 <!--android:background="#fff"-->
                 <!--android:id="@+id/richEditor">-->
         <!--</com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor>-->
+        <include layout="@layout/edit_default_v1"/>
 
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/format_btn"
                 android:layout_height="50dp"
                 android:layout_width="match_parent"
-                android:background="#666"
+                android:background="?attr/colorAccent"
                 android:layout_gravity="bottom"
+                android:layout_alignParentBottom="true"
                 />
 
 </android.support.design.widget.CoordinatorLayout>

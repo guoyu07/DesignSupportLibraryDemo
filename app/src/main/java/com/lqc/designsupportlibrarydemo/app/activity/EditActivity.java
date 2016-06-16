@@ -45,24 +45,16 @@ public class EditActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
 
         List<Integer> mSrcBtnImgs = new ArrayList<Integer>();
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
-        mSrcBtnImgs.add(R.drawable.image1);
-        mSrcBtnImgs.add(R.drawable.image2);
-        mSrcBtnImgs.add(R.drawable.image3);
+        mSrcBtnImgs.add(R.drawable.ic_format_img);
+        mSrcBtnImgs.add(R.drawable.ic_format_bold);
+        mSrcBtnImgs.add(R.drawable.ic_format_quote);
+        mSrcBtnImgs.add(R.drawable.ic_format_bullet);
+        mSrcBtnImgs.add(R.drawable.ic_insert_link);
+        mSrcBtnImgs.add(R.drawable.ic_insert_link);
+        mSrcBtnImgs.add(R.drawable.ic_format_strikethrough);
+        mSrcBtnImgs.add(R.drawable.ic_format_bold);
+        mSrcBtnImgs.add(R.drawable.ic_format_italic);
+        mSrcBtnImgs.add(R.drawable.ic_format_underline);
         mAdapter = new BtnRecyclerViewAdapter(this, mSrcBtnImgs);
         recyclerView.setAdapter(mAdapter);
     }
