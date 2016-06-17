@@ -19,7 +19,7 @@ import java.util.List;
  * Created by albert on 16-6-14.
  */
 
-public class OrmLiteTest extends AndroidTestCase
+public class OrmLitedbTest extends AndroidTestCase
 {
     public void testAddArticle()
     {
