@@ -15,18 +15,21 @@
                         android:layout_height="?attr/actionBarSize"
                         android:layout_width="match_parent"
                         android:background="?attr/colorPrimary"
-                        app:layout_scrollFlags="scroll|enterAlways"
+                        app:layout_scrollFlags="enterAlways"
                         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.AppBarLayout>
 
-        <!--<com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="#fff"-->
-                <!--android:id="@+id/richEditor">-->
-        <!--</com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor>-->
-        <include layout="@layout/edit_default_v1"/>
+        <com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:background="#FFF"
+                android:id="@+id/richEditor"
+                app:defaultLayoutV1="1">
+        </com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor>
+        <!--<include layout="@layout/edit_default_v1"/>-->
 
+        <!--富文本按钮-->
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/format_btn"
                 android:layout_height="50dp"

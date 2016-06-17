@@ -4,5 +4,6 @@
         <attr name="quoteColor" format="reference|color" />
         <attr name="quoteStripeWidth" format="reference|dimension" />
         <attr name="quoteGapWitdth" format="reference|dimension" />
+        <attr name="defaultLayoutV1" format="reference|integer" />
     </declare-styleable>
 </resources>

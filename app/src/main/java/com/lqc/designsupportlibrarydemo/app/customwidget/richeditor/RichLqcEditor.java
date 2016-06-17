@@ -2,19 +2,28 @@ package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.widget.Toast;
 import com.lqc.designsupportlibrarydemo.app.R;
 import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.interfaces.BaseEditor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by albert on 16-6-15.
  */
-public class RichLqcEditor extends RecyclerView implements BaseEditor{
+public class RichLqcEditor extends RecyclerView implements BaseEditor<String>{
 
-    private int quoteColor = 0;
-    private int quoteStripWidth = 0;
-    private int quoteGapWidth = 0;
+    //layoutManager和adapter
+    private LinearLayoutManager mLayoutmanager;
+    private RERcyclerViewAdapter mAdapter;
+
+    //attrs
+    private int defaultLayoutV1 = 0;
 
     //构造函数
     public RichLqcEditor(Context context) {
@@ -27,15 +36,26 @@ public class RichLqcEditor extends RecyclerView implements BaseEditor{
 
     public RichLqcEditor(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs);
+        init(attrs);    //初始化布局的参数
+        mLayoutmanager = new LinearLayoutManager(context);  //初始化布局器
+        mLayoutmanager.setOrientation(OrientationHelper.VERTICAL);
+
+        this.setLayoutManager(mLayoutmanager);
+
+        //默认第一种布局
+        if (defaultLayoutV1 == 1){
+            mAdapter = new RERcyclerViewAdapter(context, R.layout.rl_header);   //初始化适配器
+            this.setAdapter(mAdapter);
+//            Toast.makeText(context,
+//                    "加载第一种布局",
+//                    Toast.LENGTH_SHORT)
+//                    .show();
+        }
     }
 
     private void init(AttributeSet attrs){
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RichLqcEditor);
-        quoteColor = array.getColor(R.styleable.RichLqcEditor_quoteColor, 0);
-        quoteStripWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_quoteStripeWidth, 0);
-        quoteGapWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_quoteGapWitdth, 0);
-
+        defaultLayoutV1 = array.getInt(R.styleable.RichLqcEditor_defaultLayoutV1, 0);
         array.recycle();
     }
 
@@ -106,7 +126,7 @@ public class RichLqcEditor extends RecyclerView implements BaseEditor{
     }
 
     @Override
-    public void loadNote(Object editData) {
+    public void loadNote(String editData) {
 
     }
 }

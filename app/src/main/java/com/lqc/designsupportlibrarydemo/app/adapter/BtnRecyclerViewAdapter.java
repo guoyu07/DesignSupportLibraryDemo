@@ -41,10 +41,10 @@ public class BtnRecyclerViewAdapter extends RecyclerView.Adapter<BtnRecyclerView
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(mContext,
-//                        "点击选择功能",
-//                        Toast.LENGTH_SHORT)
-//                        .show();
+                Toast.makeText(mContext,
+                        "点击选择功能",
+                        Toast.LENGTH_SHORT)
+                        .show();
             }
         });
     }
