@@ -25,7 +25,7 @@ public class LqcEditText extends EditText implements TextWatcher{
     public static final int FORMAT_LINK = 0x02;
     public static final int FORMAT_STRIKETHROUGH = 0x02;
 
-    //attrs
+    //attr
     private int quoteColor = 0;
     private int quoteStripWidth = 0;
     private int quoteGapWidth = 0;
