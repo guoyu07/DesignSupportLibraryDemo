@@ -35,6 +35,10 @@
                   android:label="@string/memo_name"
                   android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".activity.MemoEditActivity"
+                  android:windowSoftInputMode="stateVisible">
+
+        </activity>
     </application>
 
 </manifest>

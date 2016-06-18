@@ -61,17 +61,6 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(View v) {
                                 startActivity(new Intent(MainActivity.this, EditActivity.class)
                                         .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-
-//                                List<Notes> test = new NotesDao(MainActivity.this).getAll();
-//                                new NotesDao(MainActivity.this).add(new Notes("新的" + Integer.toString(test.size())));
-//
-//                                String text = test==null?"fail":Integer.toString(new NotesDao(MainActivity.this)
-//                                        .get(Notes.CON_FIELD_NAME, "新的" + Integer.toString(test.size())).get(0).getId());
-//                                Toast.makeText(MainActivity.this,
-//                                        text,
-//                                        Toast.LENGTH_SHORT)
-//                                        .show();
-
                             }
                         }).show();
             }

@@ -1,6 +1,8 @@
 package com.lqc.designsupportlibrarydemo.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,6 +33,8 @@ public class MemoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MemoRecyclerViewAdapter mAdapter;
     private List<String> mDatas;
+    private FloatingActionButton fb;
+    private String result; //编辑窗口返回的数据
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class MemoActivity extends AppCompatActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        // recyclerView 配置===============================
+        // recyclerView 配置
 
         //从数据库获取数据
         mDatas = new ArrayList<String>();
@@ -61,10 +65,31 @@ public class MemoActivity extends AppCompatActivity {
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        fb = (FloatingActionButton)findViewById(R.id.memo_fab);
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MemoActivity.this, MemoEditActivity.class), 1);
+            }
+        });
+
         initEvent();
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        result = data.getExtras().getString("result");
+
+        if (result=="success"){
+            //更新界面
+            TodoDao todoDao = new TodoDao(MemoActivity.this);
+            List<Todos> todos = todoDao.getAll();
+            mAdapter.addMemo(0, todos.get(todos.size()-1).getTodoCon());
+        }
+    }
+
+    ///////这里好像没有效果=============
     private void initEvent()
     {
         mAdapter.setOnItemClickListener(new MemoRecyclerViewAdapter.OnItemClickListener() {
@@ -97,7 +122,10 @@ public class MemoActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                break;
+//            case R.id.menu_memo_action_delete:
+//                mAdapter.removeData();
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }

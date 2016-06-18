@@ -1,6 +1,7 @@
 package com.lqc.designsupportlibrarydemo.app.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.lqc.designsupportlibrarydemo.app.R;
+import com.lqc.designsupportlibrarydemo.app.data.bean.Todos;
+import com.lqc.designsupportlibrarydemo.app.data.db.TodoDao;
 
 import java.util.List;
 
@@ -51,8 +54,8 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(MemoViewHolder holder, int position) {
-        TextView view = (TextView)holder.mView.findViewById(R.id.memo_item_tv);
+    public void onBindViewHolder(final MemoViewHolder holder, int position) {
+        final TextView view = (TextView)holder.mView.findViewById(R.id.memo_item_tv);
 //        ViewGroup.LayoutParams lp = view.getLayoutParams();
         view.setText(mCon.get(position));
 //        view.setLayoutParams(lp);
@@ -71,10 +74,15 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Toast.makeText(context,
-                            "点击事件",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    removeData(holder.getLayoutPosition());
+
+                    //删除数据库
+                    //TODO:内容相同的时候，删除一个，会把数据库所有内容相同的删掉，但是界面只删除1个引起的bugs
+                    TodoDao todoDao = new TodoDao(context);
+                    List<Todos> Dtodo = todoDao.get(Todos.CON_FIELD_NAME, mCon.get(holder.getLayoutPosition()));
+                    for (Todos todo:Dtodo){
+                        todoDao.delete(todo);
+                    }
                     return false;
                 }
             });
@@ -84,6 +92,25 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
     @Override
     public int getItemCount() {
         return mCon.size();
+    }
+
+    /**
+     * 动态增加数据
+     * @param position 添加的位置
+     * @param con 内容
+     */
+    public void addMemo(int position, String con){
+        mCon.add(position, con);
+        notifyItemInserted(position);
+    }
+
+    /**
+     * 动态删除数据
+     * @param
+     */
+    public void removeData(int position){
+        mCon.remove(position);
+        notifyItemRemoved(position);
     }
 
     public static class MemoViewHolder extends RecyclerView.ViewHolder{
