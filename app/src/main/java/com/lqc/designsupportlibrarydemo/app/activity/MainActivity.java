@@ -18,14 +18,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import com.lqc.designsupportlibrarydemo.app.adapter.FragmentAdapter;
-import com.lqc.designsupportlibrarydemo.app.data.bean.Article;
-import com.lqc.designsupportlibrarydemo.app.data.bean.User;
-import com.lqc.designsupportlibrarydemo.app.data.db.ArticleDao;
-import com.lqc.designsupportlibrarydemo.app.data.db.UserDao;
+import com.lqc.designsupportlibrarydemo.app.data.bean.Notes;
+import com.lqc.designsupportlibrarydemo.app.data.db.NotesDao;
 import com.lqc.designsupportlibrarydemo.app.fragment.ListFragment;
 import com.lqc.designsupportlibrarydemo.app.R;
-import com.lqc.designsupportlibrarydemo.app.test.OrmLiteTest;
-import com.lqc.designsupportlibrarydemo.app.test.OrmLitedbTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,28 +59,17 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("我知道了", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                Toast.makeText(
-//                                        MainActivity.this,
-//                                        "准备进入写日记模式",
-//                                        Toast.LENGTH_SHORT
-//                                ).show();
-//                                startActivity(new Intent(MainActivity.this, EditActivity.class));
-//                                User u = new User();
-//                                u.setName("张鸿洋");
-//                                new UserDao(MainActivity.this).add(u);
+                                startActivity(new Intent(MainActivity.this, EditActivity.class));
 
-//                                Article article = new Article();
-//                                article.setTitle("ORMLite的使用");
-//                                article.setUser(u);
-//                                new ArticleDao(MainActivity.this).add(article);
-
-                                User user = new UserDao(MainActivity.this).get(200);
-
-                                String text = user==null?"test":user.getName();
-                                Toast.makeText(MainActivity.this,
-                                        text,
-                                        Toast.LENGTH_SHORT)
-                                        .show();
+//                                List<Notes> test = new NotesDao(MainActivity.this).getAll();
+//                                new NotesDao(MainActivity.this).add(new Notes("新的" + Integer.toString(test.size())));
+//
+//                                String text = test==null?"fail":Integer.toString(new NotesDao(MainActivity.this)
+//                                        .get(Notes.CON_FIELD_NAME, "新的" + Integer.toString(test.size())).get(0).getId());
+//                                Toast.makeText(MainActivity.this,
+//                                        text,
+//                                        Toast.LENGTH_SHORT)
+//                                        .show();
 
                             }
                         }).show();

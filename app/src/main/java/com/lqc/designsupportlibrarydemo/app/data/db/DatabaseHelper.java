@@ -6,9 +6,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.lqc.designsupportlibrarydemo.app.data.bean.Article;
-import com.lqc.designsupportlibrarydemo.app.data.bean.Student;
-import com.lqc.designsupportlibrarydemo.app.data.bean.User;
+import com.lqc.designsupportlibrarydemo.app.data.bean.*;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,7 +17,7 @@ import java.util.Map;
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 {
-    private static final String TABLE_NAME = "sqlite-test.db";
+    private static final String TABLE_NAME = "sqlite-notes.db";
 
     private Map<String, Dao> daos = new HashMap<String, Dao>();
 
@@ -34,9 +32,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
     {
         try
         {
-            TableUtils.createTable(connectionSource, User.class);
-            TableUtils.createTable(connectionSource, Article.class);
-            TableUtils.createTable(connectionSource, Student.class);
+            TableUtils.createTable(connectionSource, Tags.class);
+            TableUtils.createTable(connectionSource, Notes.class);
+            TableUtils.createTable(connectionSource, Todos.class);
         } catch (SQLException e)
         {
             e.printStackTrace();
@@ -49,9 +47,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
     {
         try
         {
-            TableUtils.dropTable(connectionSource, User.class, true);
-            TableUtils.dropTable(connectionSource, Article.class, true);
-            TableUtils.dropTable(connectionSource, Student.class, true);
+            TableUtils.dropTable(connectionSource, Tags.class, true);
+            TableUtils.dropTable(connectionSource, Notes.class, true);
+            TableUtils.dropTable(connectionSource, Todos.class, true);
             onCreate(database, connectionSource);
         } catch (SQLException e)
         {

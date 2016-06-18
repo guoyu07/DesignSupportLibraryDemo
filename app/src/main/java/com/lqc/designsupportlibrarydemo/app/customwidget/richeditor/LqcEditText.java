@@ -429,7 +429,6 @@ public class LqcEditText extends EditText implements TextWatcher{
     // QuoteSpan =========================================================================================
 
 
-
     //没有绘制前调用
     @Override
     protected void onAttachedToWindow() {
