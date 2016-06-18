@@ -16,7 +16,7 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,6 +30,10 @@
         <activity android:name=".activity.EditActivity"
                   android:label="@string/app_name"
                   android:windowSoftInputMode="stateVisible|adjustResize">
+        </activity>
+        <activity android:name=".activity.MemoActivity"
+                  android:label="@string/memo_name"
+                  android:windowSoftInputMode="adjustResize">
         </activity>
     </application>
 

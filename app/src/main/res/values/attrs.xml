@@ -8,5 +8,7 @@
         <attr name="quoteStripeWidth" format="reference|dimension" />
         <attr name="quoteGapWitdth" format="reference|dimension" />
         <attr name="defaultLayoutV1" format="reference|integer" />
+        <attr name="linkColor" format="reference|color" />
+        <attr name="linkUnderline" format="reference|boolean" />
     </declare-styleable>
 </resources>

@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId "com.lqc.designsupportlibrarydemo.app"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -46,6 +46,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
 
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.gabrielemariotti.recyclerview:recyclerview-animators:0.3.0-SNAPSHOT@aar'
 
     testCompile "junit:junit:4.12"
 }

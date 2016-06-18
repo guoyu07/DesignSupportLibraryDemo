@@ -1,4 +1,4 @@
-package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor;
+package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.customUnits;
 
 
 import android.annotation.TargetApi;
@@ -10,13 +10,14 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.BulletSpan;
-import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
+import android.text.style.*;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import com.lqc.designsupportlibrarydemo.app.R;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans.LqcBulletSpan;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans.LqcQuoteSpan;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans.LqcURLSpan;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans.LqcPart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,19 +30,21 @@ public class LqcEditText extends EditText implements TextWatcher{
     //功能类型
     public static final int FORMAT_SIZE = 0x01;
     public static final int FORMAT_QUOTE = 0x02;
-    public static final int FORMAT_ULIST = 0x02;
-    public static final int FORMAT_ITALIC = 0x02;
-    public static final int FORMAT_UNDERLINED = 0x02;
-    public static final int FORMAT_LINK = 0x02;
-    public static final int FORMAT_STRIKETHROUGH = 0x02;
+    public static final int FORMAT_ULIST = 0x03;
+    public static final int FORMAT_ITALIC = 0x04;
+    public static final int FORMAT_UNDERLINED = 0x05;
+    public static final int FORMAT_LINK = 0x06;
+    public static final int FORMAT_STRIKETHROUGH = 0x07;
 
     //attr
     private int quoteColor = 0;
-    private int quoteStripWidth = 0;
+    private int quoteStripeWidth = 0;
     private int quoteGapWidth = 0;
     private int bulletColor = 0;
     private int bulletRadius = 0;
     private int bulletGapWidth = 0;
+    private int linkColor = 0;
+    private boolean linkUnderline = true;
 
 
     public LqcEditText(Context context) {
@@ -66,11 +69,13 @@ public class LqcEditText extends EditText implements TextWatcher{
     private void init(AttributeSet attrs){
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RichLqcEditor);
         quoteColor = array.getColor(R.styleable.RichLqcEditor_quoteColor, 0);
-        quoteStripWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_quoteStripeWidth, 0);
+        quoteStripeWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_quoteStripeWidth, 0);
         quoteGapWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_quoteGapWitdth, 0);
         bulletColor = array.getColor(R.styleable.RichLqcEditor_bulletColor, 0);
         bulletRadius = array.getDimensionPixelSize(R.styleable.RichLqcEditor_bulletRadius, 0);
         bulletGapWidth = array.getDimensionPixelSize(R.styleable.RichLqcEditor_bulletGapWidth, 0);
+        linkColor = array.getColor(R.styleable.RichLqcEditor_linkColor, 0);
+        linkUnderline = array.getBoolean(R.styleable.RichLqcEditor_linkUnderline, true);
 
         array.recycle();
     }
@@ -428,6 +433,199 @@ public class LqcEditText extends EditText implements TextWatcher{
 
     // QuoteSpan =========================================================================================
 
+    public void quote(boolean valid) {
+        if (valid) {
+            quoteValid();
+        } else {
+            quoteInvalid();
+        }
+    }
+
+    protected void quoteValid() {
+        String[] lines = TextUtils.split(getEditableText().toString(), "\n");
+
+        for (int i = 0; i < lines.length; i++) {
+            if (containQuote(i)) {
+                continue;
+            }
+
+            int lineStart = 0;
+            for (int j = 0; j < i; j++) {
+                lineStart = lineStart + lines[j].length() + 1; // \n
+            }
+
+            int lineEnd = lineStart + lines[i].length();
+            if (lineStart >= lineEnd) {
+                continue;
+            }
+
+            int quoteStart = 0;
+            int quoteEnd = 0;
+            if (lineStart <= getSelectionStart() && getSelectionEnd() <= lineEnd) {
+                quoteStart = lineStart;
+                quoteEnd = lineEnd;
+            } else if (getSelectionStart() <= lineStart && lineEnd <= getSelectionEnd()) {
+                quoteStart = lineStart;
+                quoteEnd = lineEnd;
+            }
+
+            if (quoteStart < quoteEnd) {
+                getEditableText().setSpan(new LqcQuoteSpan(quoteColor, quoteStripeWidth, quoteGapWidth), quoteStart, quoteEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    protected void quoteInvalid() {
+        String[] lines = TextUtils.split(getEditableText().toString(), "\n");
+
+        for (int i = 0; i < lines.length; i++) {
+            if (!containQuote(i)) {
+                continue;
+            }
+
+            int lineStart = 0;
+            for (int j = 0; j < i; j++) {
+                lineStart = lineStart + lines[j].length() + 1;
+            }
+
+            int lineEnd = lineStart + lines[i].length();
+            if (lineStart >= lineEnd) {
+                continue;
+            }
+
+            int quoteStart = 0;
+            int quoteEnd = 0;
+            if (lineStart <= getSelectionStart() && getSelectionEnd() <= lineEnd) {
+                quoteStart = lineStart;
+                quoteEnd = lineEnd;
+            } else if (getSelectionStart() <= lineStart && lineEnd <= getSelectionEnd()) {
+                quoteStart = lineStart;
+                quoteEnd = lineEnd;
+            }
+
+            if (quoteStart < quoteEnd) {
+                QuoteSpan[] spans = getEditableText().getSpans(quoteStart, quoteEnd, QuoteSpan.class);
+                for (QuoteSpan span : spans) {
+                    getEditableText().removeSpan(span);
+                }
+            }
+        }
+    }
+
+    protected boolean containQuote() {
+        String[] lines = TextUtils.split(getEditableText().toString(), "\n");
+        List<Integer> list = new ArrayList<Integer>();
+
+        for (int i = 0; i < lines.length; i++) {
+            int lineStart = 0;
+            for (int j = 0; j < i; j++) {
+                lineStart = lineStart + lines[j].length() + 1;
+            }
+
+            int lineEnd = lineStart + lines[i].length();
+            if (lineStart >= lineEnd) {
+                continue;
+            }
+
+            if (lineStart <= getSelectionStart() && getSelectionEnd() <= lineEnd) {
+                list.add(i);
+            } else if (getSelectionStart() <= lineStart && lineEnd <= getSelectionEnd()) {
+                list.add(i);
+            }
+        }
+
+        for (Integer i : list) {
+            if (!containQuote(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected boolean containQuote(int index) {
+        String[] lines = TextUtils.split(getEditableText().toString(), "\n");
+        if (index < 0 || index >= lines.length) {
+            return false;
+        }
+
+        int start = 0;
+        for (int i = 0; i < index; i++) {
+            start = start + lines[i].length() + 1;
+        }
+
+        int end = start + lines[index].length();
+        if (start >= end) {
+            return false;
+        }
+
+        QuoteSpan[] spans = getEditableText().getSpans(start, end, QuoteSpan.class);
+        return spans.length > 0;
+    }
+
+    // URLSpan =====================================================================================
+
+    public void link(String link) {
+        link(link, getSelectionStart(), getSelectionEnd());
+    }
+
+    // When KnifeText lose focus, use this method
+    public void link(String link, int start, int end) {
+        if (link != null && !TextUtils.isEmpty(link.trim())) {
+            linkValid(link, start, end);
+        } else {
+            linkInvalid(start, end);
+        }
+    }
+
+    protected void linkValid(String link, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+
+        linkInvalid(start, end);
+        getEditableText().setSpan(new LqcURLSpan(link, linkColor, linkUnderline), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    // Remove all span in selection, not like the boldInvalid()
+    protected void linkInvalid(int start, int end) {
+        if (start >= end) {
+            return;
+        }
+
+        URLSpan[] spans = getEditableText().getSpans(start, end, URLSpan.class);
+        for (URLSpan span : spans) {
+            getEditableText().removeSpan(span);
+        }
+    }
+
+    protected boolean containLink(int start, int end) {
+        if (start > end) {
+            return false;
+        }
+
+        if (start == end) {
+            if (start - 1 < 0 || start + 1 > getEditableText().length()) {
+                return false;
+            } else {
+                URLSpan[] before = getEditableText().getSpans(start - 1, start, URLSpan.class);
+                URLSpan[] after = getEditableText().getSpans(start, start + 1, URLSpan.class);
+                return before.length > 0 && after.length > 0;
+            }
+        } else {
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = start; i < end; i++) {
+                if (getEditableText().getSpans(i, i + 1, URLSpan.class).length > 0) {
+                    builder.append(getEditableText().subSequence(i, i + 1).toString());
+                }
+            }
+
+            return getEditableText().subSequence(start, end).toString().equals(builder.toString());
+        }
+    }
+
+
 
     //没有绘制前调用
     @Override
@@ -445,6 +643,7 @@ public class LqcEditText extends EditText implements TextWatcher{
         removeTextChangedListener(this);
     }
 
+    //下面不用管了
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         // s:之前的文字内容
@@ -459,7 +658,7 @@ public class LqcEditText extends EditText implements TextWatcher{
         // start:添加文字的位置(从0开始)
         // before:不知道 一直是0
         // before:添加的文字总数
-        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        //super.onTextChanged(text, start, lengthBefore, lengthAfter);
     }
 
     @Override

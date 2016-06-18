@@ -1,4 +1,4 @@
-package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor;
+package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

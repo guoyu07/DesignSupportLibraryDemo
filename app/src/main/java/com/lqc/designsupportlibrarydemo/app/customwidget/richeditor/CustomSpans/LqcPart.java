@@ -1,4 +1,4 @@
-package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor;
+package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.CustomSpans;
 
 /**
  * Created by albert on 16-6-17.

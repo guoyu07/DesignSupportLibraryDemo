@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("我知道了", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(MainActivity.this, EditActivity.class));
+                                startActivity(new Intent(MainActivity.this, EditActivity.class)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
 
 //                                List<Notes> test = new NotesDao(MainActivity.this).getAll();
 //                                new NotesDao(MainActivity.this).add(new Notes("新的" + Integer.toString(test.size())));
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_overaction, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
+                        if (menuItem.getItemId() == R.id.nav_menu_memo){
+                            startActivity(new Intent(MainActivity.this, MemoActivity.class));
+                        }
                         return true;
                     }
                 });
