@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("我知道了", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                startActivity(new Intent(MainActivity.this, EditActivity.class)
+                                startActivity(new Intent(MainActivity.this, RichEditActivity.class)
                                         .setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                             }
                         }).show();

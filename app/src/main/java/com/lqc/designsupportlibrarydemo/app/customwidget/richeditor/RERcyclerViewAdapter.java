@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import cn.finalteam.galleryfinal.*;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 import com.lqc.designsupportlibrarydemo.app.R;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.utils.UILImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -28,9 +32,30 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int mBottomCount = 0;
     private List<Integer> mLayout_views;
 
+    //配置GalleryFinal
+    private ThemeConfig theme ;
+    private FunctionConfig functionConfig;
+    private ImageLoader imageLoader;
+    private CoreConfig coreConfig;
+
+    /*
+    自定义的每一项点击与长点击事件的接口,外部调用必须实现
+     */
+//    public interface OnItemClickListener{
+//        void onItemClick(View view, int position);
+//        void onItemLongClick(View view, int position);
+//    }
+//
+//    private OnItemClickListener mOnItemClickListener;
+//
+//    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
+//        this.mOnItemClickListener = mOnItemClickListener;
+//    }
+
     public RERcyclerViewAdapter(Context context){
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
+        initGalleryFinal(); //初始化GalleryFinal
     }
 
     public RERcyclerViewAdapter(Context context, int layout_id){
@@ -45,6 +70,18 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mLayout_views = layout_views;
     }
 
+    //初始化GalleryFinal
+    private void initGalleryFinal(){
+        theme = new ThemeConfig.Builder().build();
+        functionConfig = new FunctionConfig.Builder().build();
+        ImageLoaderConfiguration.createDefault(mContext);
+        imageLoader = new UILImageLoader();
+
+        coreConfig = new CoreConfig.Builder(mContext, imageLoader, theme)
+                .setFunctionConfig(functionConfig)
+                .build();
+        GalleryFinal.init(coreConfig);
+    }
     //判断item类型
     @Override
     public int getItemViewType(int position) {
@@ -81,6 +118,17 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                             "click header",
                             Toast.LENGTH_SHORT)
                             .show();
+                    GalleryFinal.openGallerySingle(1, new GalleryFinal.OnHanlderResultCallback() {
+                        @Override
+                        public void onHanlderSuccess(int i, List<PhotoInfo> list) {
+                            Toast.makeText(mContext, "打开相册成功", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onHanlderFailure(int i, String s) {
+                            Toast.makeText(mContext, "打开相册失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }else if (holder instanceof ContentViewHolder){

@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by albert on 16-6-16.
  */
-public class EditActivity extends AppCompatActivity {
+public class RichEditActivity extends AppCompatActivity {
 
     //这是自定义的富文本编辑菜单及所需要的LayoutManager和Adapter
     private RecyclerView btnRecyclerView;
