@@ -34,12 +34,26 @@ public class MemoActivity extends AppCompatActivity {
     private MemoRecyclerViewAdapter mAdapter;
     private List<String> mDatas;
     private FloatingActionButton fb;
+    private String sourceCon;
     private String result; //编辑窗口返回的数据
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
+
+        //这里是如果是编辑已有的memo返回的数据
+        Intent intent = getIntent();
+        try{
+            sourceCon = intent.getExtras().getString("sourceCon");
+            result = intent.getExtras().getString("result");
+            Todos todo = new TodoDao(MemoActivity.this).get(Todos.CON_FIELD_NAME, sourceCon).get(0);
+            todo.setTodoCon(result);    //更新数据
+            new TodoDao(MemoActivity.this).update(todo);    //保存到数据库
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.memo_drawer);
         mToolbar = (Toolbar)findViewById(R.id.memo_toolbar);
@@ -69,6 +83,9 @@ public class MemoActivity extends AppCompatActivity {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(MemoActivity.this, MemoEditActivity.class);
+                intent.putExtra("isNew", true);
+
                 startActivityForResult(new Intent(MemoActivity.this, MemoEditActivity.class), 1);
             }
         });
@@ -77,16 +94,15 @@ public class MemoActivity extends AppCompatActivity {
 
     }
 
+    //编辑界面返回的数据的保存
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         result = data.getExtras().getString("result");
 
-        if (result=="success"){
-            //更新界面
-            TodoDao todoDao = new TodoDao(MemoActivity.this);
-            List<Todos> todos = todoDao.getAll();
-            mAdapter.addMemo(0, todos.get(todos.size()-1).getTodoCon());
-        }
+        //更新界面
+        mAdapter.addMemo(0, result);
+        //更新数据库
+        new TodoDao(MemoActivity.this).add(new Todos(result));
     }
 
     ///////这里好像没有效果=============
@@ -103,10 +119,10 @@ public class MemoActivity extends AppCompatActivity {
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(MemoActivity.this,
-                        "长点击事件",
-                        Toast.LENGTH_SHORT)
-                        .show();
+//                Toast.makeText(MemoActivity.this,
+//                        "长点击事件",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
             }
         });
     }

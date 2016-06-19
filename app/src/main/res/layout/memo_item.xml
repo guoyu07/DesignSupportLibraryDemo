@@ -13,8 +13,8 @@
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
               android:padding="4dp"
               android:paddingBottom="6dp"
-              android:textSize="17sp"
               android:maxHeight="250dp"
+              android:textSize="17sp"
               android:scrollbars="none"
             android:id="@+id/memo_item_tv"/>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"

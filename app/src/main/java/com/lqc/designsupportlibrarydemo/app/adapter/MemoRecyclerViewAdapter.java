@@ -1,6 +1,7 @@
 package com.lqc.designsupportlibrarydemo.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.lqc.designsupportlibrarydemo.app.R;
+import com.lqc.designsupportlibrarydemo.app.activity.MemoEditActivity;
 import com.lqc.designsupportlibrarydemo.app.data.bean.Todos;
 import com.lqc.designsupportlibrarydemo.app.data.db.TodoDao;
 
@@ -64,11 +66,14 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //
-                    Toast.makeText(context,
-                            "点击事件",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    //打开Memo编辑页面
+                    Intent intent = new Intent();
+                    intent.setClass(context, MemoEditActivity.class)
+                            .putExtra("editTextCon", view.getText().toString())
+                    .putExtra("isExited", true)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //这是打开已经存在的东西的标志
+                    context.startActivity(intent);
+
                 }
             });
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -76,10 +81,8 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
                 public boolean onLongClick(View v) {
                     removeData(holder.getLayoutPosition());
 
-                    //删除数据库
-                    //TODO:内容相同的时候，删除一个，会把数据库所有内容相同的删掉，但是界面只删除1个引起的bugs
                     TodoDao todoDao = new TodoDao(context);
-                    List<Todos> Dtodo = todoDao.get(Todos.CON_FIELD_NAME, mCon.get(holder.getLayoutPosition()));
+                    List<Todos> Dtodo = todoDao.get(Todos.CON_FIELD_NAME, view.getText().toString());
                     for (Todos todo:Dtodo){
                         todoDao.delete(todo);
                     }
