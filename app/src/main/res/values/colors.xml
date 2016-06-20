@@ -5,4 +5,5 @@
     <color name="blue_500">#FF2196F3</color>
     <color name="blue_700">#FF1976D2</color>
     <color name="memo_selected">#FFf0f0f0</color>
+    <color name="colorPrimaryDark">#512DA8</color>
 </resources>

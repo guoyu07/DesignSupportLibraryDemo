@@ -16,9 +16,11 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal|center_vertical">
         <ImageView android:layout_width="25dp" android:layout_height="35dp"
+                   android:id="@+id/edit_cover_iv"
                    android:src="@drawable/ic_event"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:text="添加封面"
+                  android:id="@+id/edit_cover_tv"
                   android:textSize="16sp"
                   android:textColor="#999"/>
     </LinearLayout>
@@ -27,7 +29,8 @@
                   android:orientation="vertical"
                   android:paddingLeft="30dp"
                   android:paddingRight="30dp"
-                  android:divider="#DDD">
+                  android:divider="#DDD"
+            android:id="@+id/edit_default_title_cover">
         <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:hint="标题"
                   android:background="@null"

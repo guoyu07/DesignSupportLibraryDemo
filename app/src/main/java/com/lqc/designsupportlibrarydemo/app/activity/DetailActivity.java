@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity{
 
         CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle("我的课程");
+        collapsingToolbar.setTitle("我的日记");
     }
 
     public void checkin(View view){

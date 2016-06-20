@@ -1,6 +1,13 @@
 package com.lqc.designsupportlibrarydemo.app.customwidget.richeditor;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +19,10 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 import com.lqc.designsupportlibrarydemo.app.R;
 import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.utils.UILImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -56,6 +66,7 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         initGalleryFinal(); //初始化GalleryFinal
+        initImageLoader(context);
     }
 
     public RERcyclerViewAdapter(Context context, int layout_id){
@@ -70,18 +81,6 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mLayout_views = layout_views;
     }
 
-    //初始化GalleryFinal
-    private void initGalleryFinal(){
-        theme = new ThemeConfig.Builder().build();
-        functionConfig = new FunctionConfig.Builder().build();
-        ImageLoaderConfiguration.createDefault(mContext);
-        imageLoader = new UILImageLoader();
-
-        coreConfig = new CoreConfig.Builder(mContext, imageLoader, theme)
-                .setFunctionConfig(functionConfig)
-                .build();
-        GalleryFinal.init(coreConfig);
-    }
     //判断item类型
     @Override
     public int getItemViewType(int position) {
@@ -110,7 +109,7 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder){
-            View view = ((HeaderViewHolder) holder).mView;
+            final View view = ((HeaderViewHolder) holder).mView;
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,9 +118,26 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                             Toast.LENGTH_SHORT)
                             .show();
                     GalleryFinal.openGallerySingle(1, new GalleryFinal.OnHanlderResultCallback() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void onHanlderSuccess(int i, List<PhotoInfo> list) {
-                            Toast.makeText(mContext, "打开相册成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, list.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
+                            Bitmap photo = BitmapFactory.decodeFile(list.get(0).getPhotoPath());
+
+//                                view.setBackground(new BitmapDrawable(photo));
+                                View v = view.findViewById(R.id.edit_default_v1_cover);
+                                LinearLayout.LayoutParams layoutParams =
+                                        (LinearLayout.LayoutParams)v
+                                                .getLayoutParams();
+                                layoutParams.setMargins(0, 0, 0, 22);
+                                layoutParams.height = 350;
+                                v.setLayoutParams(layoutParams);
+                                v.setBackground(new BitmapDrawable(photo));
+                                v.findViewById(R.id.edit_cover_iv).setVisibility(View.INVISIBLE);
+                                v.findViewById(R.id.edit_cover_tv).setVisibility(View.INVISIBLE);
+//                                v.setVisibility(View.INVISIBLE);
+
+//                                view.findViewById(R.id.edit_default_title_cover).setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -176,6 +192,51 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private boolean isBottomView(int position){
         return mBottomCount!=0 && position>=(mHeaderCount+getContentItemCount());
     }
+
+
+    /*
+    配置图像编辑器===============================================================
+     */
+
+    //init imageLoader
+    private void initImageLoader(Context context){
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(mContext);
+        config.threadPriority(Thread.NORM_PRIORITY-2)
+                .denyCacheImageMultipleSizesInMemory()
+                .diskCacheSize(50*1024*1024)
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs();
+
+        ImageLoader.getInstance().init(config.build());
+
+    }
+
+    //初始化GalleryFinal
+    private void initGalleryFinal(){
+        theme = new ThemeConfig.Builder()
+                .setTitleBarBgColor(Color.rgb(0x67, 0x3A, 0xB7)).build();
+        //功能
+        functionConfig = new FunctionConfig.Builder()
+                .setEnableEdit(true)
+                .setEnableCrop(true)
+                .setEnableCamera(true)
+                .setForceCrop(true)
+                .setCropWidth(800)
+                .setCropHeight(600)
+                .build();
+        ImageLoaderConfiguration.createDefault(mContext);
+        cn.finalteam.galleryfinal.ImageLoader imageLoader = new UILImageLoader();
+
+        coreConfig = new CoreConfig.Builder(mContext, imageLoader, theme)
+                .setFunctionConfig(functionConfig)
+                .setEditPhotoCacheFolder(new File("/sdcard/DICM/LittleHorse/tmp/"))
+                .setTakePhotoFolder(new File("/sdcard/DICM/LittleHorse/"))
+                .build();
+        GalleryFinal.init(coreConfig);
+    }
+
+    //配置图像编辑器===============================================================
+
 
 
     //头部标题组件
