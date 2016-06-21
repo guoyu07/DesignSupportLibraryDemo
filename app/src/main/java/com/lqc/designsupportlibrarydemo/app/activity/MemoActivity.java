@@ -109,10 +109,17 @@ public class MemoActivity extends AppCompatActivity {
     private void initEvent()
     {
         mAdapter.setOnItemClickListener(new MemoRecyclerViewAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int positon) {
+//                Toast.makeText(MemoActivity.this,
+//                        "事件传递到我这里了",
+//                        Toast.LENGTH_SHORT)
+//                        .show();
+//            }
             @Override
-            public void onItemClick(View view, int positon) {
+            public void onItemClick(View view, int position) {
                 Toast.makeText(MemoActivity.this,
-                        "点击事件",
+                        "事件传递到我这里了"+Integer.toString(position),
                         Toast.LENGTH_SHORT)
                         .show();
             }

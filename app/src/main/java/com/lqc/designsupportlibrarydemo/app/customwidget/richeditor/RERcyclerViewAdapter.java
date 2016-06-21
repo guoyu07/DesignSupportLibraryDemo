@@ -35,6 +35,9 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public static final int ITEM_TYPE_CONTENT = 1;
     public static final int ITEM_TYPE_BOTTOM = 2;
 
+    //GalleryFinal事件类型
+    private static final int SET_COVER_EVENT = 1;
+
     private Context mContext;
     private LayoutInflater mInflater;
     private int mLayout_id = 0 ;    //默认layout方式
@@ -117,14 +120,13 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                             "click header",
                             Toast.LENGTH_SHORT)
                             .show();
-                    GalleryFinal.openGallerySingle(1, new GalleryFinal.OnHanlderResultCallback() {
+                    GalleryFinal.openGallerySingle(SET_COVER_EVENT, new GalleryFinal.OnHanlderResultCallback() {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void onHanlderSuccess(int i, List<PhotoInfo> list) {
                             Toast.makeText(mContext, list.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
                             Bitmap photo = BitmapFactory.decodeFile(list.get(0).getPhotoPath());
-
-//                                view.setBackground(new BitmapDrawable(photo));
+                                //添加图片后修改布局
                                 View v = view.findViewById(R.id.edit_default_v1_cover);
                                 LinearLayout.LayoutParams layoutParams =
                                         (LinearLayout.LayoutParams)v
@@ -135,9 +137,6 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                                 v.setBackground(new BitmapDrawable(photo));
                                 v.findViewById(R.id.edit_cover_iv).setVisibility(View.INVISIBLE);
                                 v.findViewById(R.id.edit_cover_tv).setVisibility(View.INVISIBLE);
-//                                v.setVisibility(View.INVISIBLE);
-
-//                                view.findViewById(R.id.edit_default_title_cover).setVisibility(View.INVISIBLE);
                         }
 
                         @Override

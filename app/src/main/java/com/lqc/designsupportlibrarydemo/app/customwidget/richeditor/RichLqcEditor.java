@@ -46,10 +46,6 @@ public class RichLqcEditor extends RecyclerView implements BaseEditor<String>{
         if (defaultLayoutV1 == 1){
             mAdapter = new RERcyclerViewAdapter(context, R.layout.rl_header);   //初始化适配器
             this.setAdapter(mAdapter);
-//            Toast.makeText(context,
-//                    "加载第一种布局",
-//                    Toast.LENGTH_SHORT)
-//                    .show();
         }
     }
 
@@ -116,7 +112,7 @@ public class RichLqcEditor extends RecyclerView implements BaseEditor<String>{
     }
 
     @Override
-    public void insertImage(String imagePath) {
+    public void insertImage() {
 
     }
 

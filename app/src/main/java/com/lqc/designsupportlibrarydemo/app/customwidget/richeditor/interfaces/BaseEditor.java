@@ -33,7 +33,7 @@ public interface BaseEditor<EditDataType> {
 
 
     //光标行图像操作
-    void insertImage(String imagePath); //插入图像
+    void insertImage(); //插入图像
 
     //导入导出数据
     void storeNote();   //保存editor的内容，包含格式排版，保存的格式是EditDataTYpe决定的

@@ -29,7 +29,6 @@
             android:id="@+id/richEditor"
             app:defaultLayoutV1="1">
     </com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor>
-    <!--<include layout="@layout/edit_default_v1"/>-->
 
     <!--富文本按钮-->
     <android.support.v7.widget.RecyclerView

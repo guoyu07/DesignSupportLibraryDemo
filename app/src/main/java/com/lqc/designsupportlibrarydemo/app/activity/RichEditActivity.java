@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 import com.lqc.designsupportlibrarydemo.app.R;
 import com.lqc.designsupportlibrarydemo.app.adapter.BtnRecyclerViewAdapter;
 import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor;
@@ -81,6 +82,38 @@ public class RichEditActivity extends AppCompatActivity {
         mSrcBtnImgs.add(R.drawable.ic_format_italic);
         mSrcBtnImgs.add(R.drawable.ic_format_underline);
         mAdapter = new BtnRecyclerViewAdapter(context, mSrcBtnImgs);
+        mAdapter.setOnBtnRecyclerViewClickListener(new BtnRecyclerViewAdapter.OnBtnRecyclerViewClickListener() {
+            @Override
+            public void OnItemClick(View v, int position) {
+                //TODO 接口调用写好，然后进行富文本调试
+                Toast.makeText(RichEditActivity.this,
+                        "点击了第"+Integer.toString(position+1)+"个按钮",
+                        Toast.LENGTH_SHORT)
+                        .show();
+                switch (position){
+                    case 0:
+                        mRichEditor.insertImage();
+                    case 1:
+                        mRichEditor.setTextSize(18);
+                    case 2:
+                        mRichEditor.setQuote(true);
+                    case 3:
+                        mRichEditor.setUlist(true);
+                    case 4:
+//                        mRichEditor.link();
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                }
+            }
+
+            @Override
+            public void OnIntemLongClick(View v, int flags) {
+
+            }
+        });
         btnRecyclerView.setAdapter(mAdapter);
 
         //菜单栏隐显设置
