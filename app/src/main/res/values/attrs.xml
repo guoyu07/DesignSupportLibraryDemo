@@ -7,7 +7,10 @@
         <attr name="quoteColor" format="reference|color" />
         <attr name="quoteStripeWidth" format="reference|dimension" />
         <attr name="quoteGapWitdth" format="reference|dimension" />
-        <attr name="defaultLayoutV1" format="reference|integer" />
+        <attr name="defaultLayout">
+            <enum name="ARTICLE_DEFAULT" value="1"/>
+            <enum name="ARTICLE_CARD" value="2"/>
+        </attr>
         <attr name="linkColor" format="reference|color" />
         <attr name="linkUnderline" format="reference|boolean" />
     </declare-styleable>

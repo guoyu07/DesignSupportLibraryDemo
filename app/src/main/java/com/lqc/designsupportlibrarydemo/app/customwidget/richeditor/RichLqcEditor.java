@@ -18,12 +18,16 @@ import java.util.List;
  */
 public class RichLqcEditor extends RecyclerView implements BaseEditor<String>{
 
+    //默认排版布局
+    public static final int ARTICLE_DEFAULT = 1;
+    public static final int ARTICLE_CARD = 2;
+
     //layoutManager和adapter
     private LinearLayoutManager mLayoutmanager;
     private RERcyclerViewAdapter mAdapter;
 
     //attrs
-    private int defaultLayoutV1 = 0;
+    private int defaultLayout = 0;
 
     //构造函数
     public RichLqcEditor(Context context) {
@@ -43,15 +47,16 @@ public class RichLqcEditor extends RecyclerView implements BaseEditor<String>{
         this.setLayoutManager(mLayoutmanager);
 
         //默认第一种布局
-        if (defaultLayoutV1 == 1){
+        if (defaultLayout == ARTICLE_DEFAULT){
             mAdapter = new RERcyclerViewAdapter(context, R.layout.rl_header);   //初始化适配器
             this.setAdapter(mAdapter);
         }
     }
 
+    //通过xml文件初始化的设置初始化
     private void init(AttributeSet attrs){
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.RichLqcEditor);
-        defaultLayoutV1 = array.getInt(R.styleable.RichLqcEditor_defaultLayoutV1, 0);
+        defaultLayout = array.getInt(R.styleable.RichLqcEditor_defaultLayout, 0);
         array.recycle();
     }
 

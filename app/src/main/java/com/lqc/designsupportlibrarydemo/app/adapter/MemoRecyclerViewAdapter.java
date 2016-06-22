@@ -19,22 +19,22 @@ import java.util.List;
 /**
  * Created by albert on 16-6-18.
  */
-public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerViewAdapter.MemoViewHolder> implements View.OnClickListener{
+public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerViewAdapter.MemoViewHolder>{
 
     private Context context;
     private LayoutInflater mInflater;
     private List<String> mCon;
     private int position;   //当前view的位置标记
-    @Override
-    public void onClick(View v) {
-        if (mOnItemClickListener!=null){
-            if ((Integer)v.getTag()!=null) {
-                mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
-            }else {
-                mOnItemClickListener.onItemClick(v, 1);
-            }
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        if (mOnItemClickListener!=null){
+//            if ((Integer)v.getTag()!=null) {
+//                mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+//            }else {
+//                mOnItemClickListener.onItemClick(v, 1);
+//            }
+//        }
+//    }
 
     /**
      * 自定义每个item点击与长恩点击的监听器接口
@@ -63,7 +63,7 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
     @Override
     public MemoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.memo_item, parent, false);
-        view.setOnClickListener(this);
+//        view.setOnClickListener(this);
         return new MemoViewHolder(view);
     }
 
@@ -78,34 +78,34 @@ public class MemoRecyclerViewAdapter extends RecyclerView.Adapter<MemoRecyclerVi
         view.setText(mCon.get(position));
 //        view.setLayoutParams(lp);
 
-//        if (mOnItemClickListener!=null){
-//            view.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    //打开Memo编辑页面
-//                    Intent intent = new Intent();
-//                    intent.setClass(context, MemoEditActivity.class)
-//                            .putExtra("editTextCon", view.getText().toString())
-//                    .putExtra("isExited", true)
-//                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //这是打开已经存在的东西的标志
-//                    context.startActivity(intent);
-//
-//                }
-//            });
-//            view.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//                    removeData(holder.getLayoutPosition());
-//
-//                    TodoDao todoDao = new TodoDao(context);
-//                    List<Todos> Dtodo = todoDao.get(Todos.CON_FIELD_NAME, view.getText().toString());
-//                    for (Todos todo:Dtodo){
-//                        todoDao.delete(todo);
-//                    }
-//                    return false;
-//                }
-//            });
-//        }
+        if (mOnItemClickListener!=null){
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //打开Memo编辑页面
+                    Intent intent = new Intent();
+                    intent.setClass(context, MemoEditActivity.class)
+                            .putExtra("editTextCon", view.getText().toString())
+                    .putExtra("isExited", true)
+                    .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);    //这是打开已经存在的东西的标志
+                    context.startActivity(intent);
+
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    removeData(holder.getLayoutPosition());
+
+                    TodoDao todoDao = new TodoDao(context);
+                    List<Todos> Dtodo = todoDao.get(Todos.CON_FIELD_NAME, view.getText().toString());
+                    for (Todos todo:Dtodo){
+                        todoDao.delete(todo);
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

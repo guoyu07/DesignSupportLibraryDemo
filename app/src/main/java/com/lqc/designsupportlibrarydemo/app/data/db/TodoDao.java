@@ -30,7 +30,7 @@ public class TodoDao {
 
     /**
      * 增加一个数据项
-     * @param todo：Todo对象
+     * @param ：
      */
     public void add(Todos todo){
         try {
@@ -88,7 +88,7 @@ public class TodoDao {
 
     /**
      * 指定对象删除
-     * @param todo
+     * @param
      */
     public void update(Todos todo){
         try {
@@ -115,7 +115,7 @@ public class TodoDao {
 
     /**
      * 指定对象删除
-     * @param todo
+     * @param
      */
     public void delete(Todos todo){
         try {

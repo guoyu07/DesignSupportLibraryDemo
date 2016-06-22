@@ -51,19 +51,6 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ImageLoader imageLoader;
     private CoreConfig coreConfig;
 
-    /*
-    自定义的每一项点击与长点击事件的接口,外部调用必须实现
-     */
-//    public interface OnItemClickListener{
-//        void onItemClick(View view, int position);
-//        void onItemLongClick(View view, int position);
-//    }
-//
-//    private OnItemClickListener mOnItemClickListener;
-//
-//    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
-//        this.mOnItemClickListener = mOnItemClickListener;
-//    }
 
     public RERcyclerViewAdapter(Context context){
         this.mContext = context;
@@ -74,7 +61,10 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public RERcyclerViewAdapter(Context context, int layout_id){
         this(context);
-        if (layout_id!=0){
+        //默认为第一种布局
+        if (layout_id == RichLqcEditor.ARTICLE_DEFAULT){
+            this.mLayout_id = R.layout.rl_header;
+        }else {
             this.mLayout_id = layout_id;
         }
     }

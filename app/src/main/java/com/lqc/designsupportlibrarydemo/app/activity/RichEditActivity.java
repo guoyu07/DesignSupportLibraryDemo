@@ -87,7 +87,7 @@ public class RichEditActivity extends AppCompatActivity {
             public void OnItemClick(View v, int position) {
                 //TODO 接口调用写好，然后进行富文本调试
                 Toast.makeText(RichEditActivity.this,
-                        "点击了第"+Integer.toString(position+1)+"个按钮",
+                        "点击了第"+position+"个按钮",
                         Toast.LENGTH_SHORT)
                         .show();
                 switch (position){

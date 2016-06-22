@@ -27,7 +27,7 @@
             android:layout_marginTop="?attr/actionBarSize"
             android:background="#FFF"
             android:id="@+id/richEditor"
-            app:defaultLayoutV1="1">
+            app:defaultLayout="ARTICLE_DEFAULT">
     </com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.RichLqcEditor>
 
     <!--富文本按钮-->
