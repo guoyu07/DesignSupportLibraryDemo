@@ -8,21 +8,23 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import cn.finalteam.galleryfinal.*;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import com.lqc.designsupportlibrarydemo.app.R;
+import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.customUnits.LqcEditText;
 import com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.utils.UILImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,21 +37,23 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     public static final int ITEM_TYPE_CONTENT = 1;
     public static final int ITEM_TYPE_BOTTOM = 2;
 
-    //GalleryFinal事件类型
-    private static final int SET_COVER_EVENT = 1;
 
     private Context mContext;
     private LayoutInflater mInflater;
     private int mLayout_id = 0 ;    //默认layout方式
     private int mHeaderCount = 1;
+    private int mContentCount = 1;
     private int mBottomCount = 0;
-    private List<Integer> mLayout_views;
+    private List<View> mLayout_views;
+    private View activeConView;
 
     //配置GalleryFinal
     private ThemeConfig theme ;
     private FunctionConfig functionConfig;
     private ImageLoader imageLoader;
     private CoreConfig coreConfig;
+    //GalleryFinal事件类型
+    private static final int SET_COVER_EVENT = 1;
 
 
     public RERcyclerViewAdapter(Context context){
@@ -57,6 +61,7 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mInflater = LayoutInflater.from(context);
         initGalleryFinal(); //初始化GalleryFinal
         initImageLoader(context);
+        mLayout_views = new ArrayList<View>();  //新建content容器
     }
 
     public RERcyclerViewAdapter(Context context, int layout_id){
@@ -69,7 +74,7 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    public RERcyclerViewAdapter(Context context, List<Integer> layout_views){
+    public RERcyclerViewAdapter(Context context, List<View> layout_views){
         this(context, R.layout.rl_header);
         this.mLayout_views = layout_views;
     }
@@ -90,9 +95,14 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE_HEADER){
+            View view = mInflater.inflate(R.layout.rl_content, parent, false);
+            view.findViewById(R.id.rl_content_iv).setVisibility(View.GONE);
+            mLayout_views.add(view);//增加header时候增加一个默认的content view
             return new HeaderViewHolder(mInflater.inflate(mLayout_id, parent, false));
         }else if (viewType == ITEM_TYPE_CONTENT){
-            return new ContentViewHolder(mInflater.inflate(mLayout_views.get(0), parent, false));
+            ContentViewHolder viewHolder =  new ContentViewHolder(mLayout_views.get(getContentItemCount()-1));
+            viewHolder.setIsRecyclable(false);
+            return viewHolder;
         }else {
             //
         }
@@ -102,31 +112,28 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder){
-            final View view = ((HeaderViewHolder) holder).mView;
+//            final View view = ((HeaderViewHolder) holder).mView;
+            final View view = ((HeaderViewHolder)holder).itemView;
+            view.setTag(position);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext,
-                            "click header",
-                            Toast.LENGTH_SHORT)
-                            .show();
                     GalleryFinal.openGallerySingle(SET_COVER_EVENT, new GalleryFinal.OnHanlderResultCallback() {
                         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                         @Override
                         public void onHanlderSuccess(int i, List<PhotoInfo> list) {
-                            Toast.makeText(mContext, list.get(0).getPhotoPath(), Toast.LENGTH_SHORT).show();
                             Bitmap photo = BitmapFactory.decodeFile(list.get(0).getPhotoPath());
-                                //添加图片后修改布局
-                                View v = view.findViewById(R.id.edit_default_v1_cover);
-                                LinearLayout.LayoutParams layoutParams =
-                                        (LinearLayout.LayoutParams)v
-                                                .getLayoutParams();
-                                layoutParams.setMargins(0, 0, 0, 22);
-                                layoutParams.height = 350;
-                                v.setLayoutParams(layoutParams);
-                                v.setBackground(new BitmapDrawable(photo));
-                                v.findViewById(R.id.edit_cover_iv).setVisibility(View.INVISIBLE);
-                                v.findViewById(R.id.edit_cover_tv).setVisibility(View.INVISIBLE);
+                            //添加图片后修改布局
+                            View v = view.findViewById(R.id.edit_default_v1_cover);
+                            LinearLayout.LayoutParams layoutParams =
+                                    (LinearLayout.LayoutParams) v
+                                            .getLayoutParams();
+                            layoutParams.setMargins(0, 0, 0, 22);
+                            layoutParams.height = 350;
+                            v.setLayoutParams(layoutParams);
+                            v.setBackground(new BitmapDrawable(photo));
+                            v.findViewById(R.id.edit_cover_iv).setVisibility(View.INVISIBLE);
+                            v.findViewById(R.id.edit_cover_tv).setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -137,18 +144,18 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             });
         }else if (holder instanceof ContentViewHolder){
-            View view = ((ContentViewHolder) holder).mView;
-            view.setOnClickListener(new View.OnClickListener() {
+            final View view = ((ContentViewHolder) holder).itemView;
+            view.setTag(position);
+            ((ContentViewHolder) holder).mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,
-                            "click content",
-                            Toast.LENGTH_SHORT)
-                            .show();
+                public void onFocusChange(View v, boolean hasFocus) {
+                    Toast.makeText(mContext, "聚焦", Toast.LENGTH_SHORT).show();
+                    activeConView = view;
                 }
             });
         }else if (holder instanceof BottomViewHolder){
-            View view = ((BottomViewHolder) holder).mView;
+            View view = ((BottomViewHolder) holder).itemView;
+            view.setTag(position);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,17 +167,19 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return mHeaderCount+getContentItemCount()+mBottomCount;
+        return mHeaderCount + mContentCount + mBottomCount;
     }
 
     //获取内容item长度
     private int getContentItemCount(){
-        if (mLayout_views == null){
-            return 0;
-        }else {
-            return mLayout_views.size();
-        }
+        return mContentCount;
+    }
 
+    //更新item
+    public void addItem(int position, View viewItem){
+        mLayout_views.add(viewItem);
+        mContentCount++;
+        notifyItemInserted(position);
     }
 
     //判断是否为HeaderItem
@@ -226,30 +235,47 @@ public class RERcyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //配置图像编辑器===============================================================
 
+    /**
+     * 对外接口===================================================================
+     */
+    public void insertImage(){
+        try {
+            activeConView.findViewById(R.id.rl_content_iv).setVisibility(View.VISIBLE);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            Toast.makeText(mContext, "error", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
+    /**
+     * 对外接口===================================================================
+     */
 
 
     //头部标题组件
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
         public HeaderViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
         }
     }
     //内容组件容器
     public static class ContentViewHolder extends RecyclerView.ViewHolder{
-        public final View mView;
+        public LqcEditText mEditText;
+        public ImageView mImageView;
         public ContentViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
+            mEditText = (LqcEditText)itemView.findViewById(R.id.rl_content_edit);
+            mImageView = (ImageView)itemView.findViewById(R.id.rl_content_iv);
         }
     }
     //底部组件容器
     public static class BottomViewHolder extends RecyclerView.ViewHolder{
-        public final View mView;
         public BottomViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
         }
     }
+
 }

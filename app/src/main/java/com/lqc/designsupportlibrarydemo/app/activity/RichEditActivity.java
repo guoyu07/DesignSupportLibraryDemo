@@ -29,6 +29,18 @@ import java.util.List;
  */
 public class RichEditActivity extends AppCompatActivity {
 
+    //buttom的功能
+    private static final int BTN_INSERT_IMG = 0;
+    private static final int BTN_TEXT_SIZE = 1;
+    private static final int BTN_QUOTE = 2;
+    private static final int BTN_ULIST = 3;
+    private static final int BTN_INSERT_LINK = 4;
+    private static final int BTN_BLANK_1 = 5;
+    private static final int BTN_STRIKETHROUGH = 6;
+    private static final int BTN_BOLD = 7;
+    private static final int BTN_ITALIC = 8;
+    private static final int BTN_UNDERLINE = 9;
+
     //这是自定义的富文本编辑菜单及所需要的LayoutManager和Adapter
     private RecyclerView btnRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -91,21 +103,21 @@ public class RichEditActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT)
                         .show();
                 switch (position){
-                    case 0:
+                    case BTN_INSERT_IMG:
                         mRichEditor.insertImage();
-                    case 1:
+                    case BTN_TEXT_SIZE:
                         mRichEditor.setTextSize(18);
-                    case 2:
+                    case BTN_QUOTE:
                         mRichEditor.setQuote(true);
-                    case 3:
+                    case BTN_ULIST:
                         mRichEditor.setUlist(true);
-                    case 4:
+                    case BTN_INSERT_LINK:
 //                        mRichEditor.link();
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
+                    case BTN_BLANK_1:
+                    case BTN_STRIKETHROUGH:
+                    case BTN_BOLD:
+                    case BTN_ITALIC:
+                    case BTN_UNDERLINE:
                 }
             }
 

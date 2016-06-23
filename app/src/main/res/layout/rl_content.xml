@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/rl_content_con"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <com.lqc.designsupportlibrarydemo.app.customwidget.richeditor.customUnits.LqcEditText
+            android:id="@+id/rl_content_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:hint="编辑正文"
+            android:background="@null"
+            android:textColor="#9e9e9e"/>
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+               android:id="@+id/rl_content_iv"
+            android:src="@drawable/head"
+           android:layout_marginTop="6dp"
+           android:layout_marginLeft="30dp"
+           android:layout_marginRight="30dp"/>
+</LinearLayout>
